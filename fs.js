@@ -1,7 +1,6 @@
 import os from "os";
 import path from "path";
 import fs from "fs";
-import {printCurrentDirectory} from "./app.js";
 
 export const goToUpperDirectory = (currentDirectory) => {
     if (currentDirectory !== os.homedir()) {
@@ -19,8 +18,6 @@ export const changeDirectory = (currentDirectory, targetDirectory) => {
             return resolvedPath;
         } else {
             console.log('Invalid directory');
-            console.log(currentDirectory);
-            console.log(resolvedPath);
         }
     }
 };

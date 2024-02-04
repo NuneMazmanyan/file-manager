@@ -4,16 +4,14 @@ import zlib from 'zlib';
 
 export const compressFile = (sourcePath, destinationPath) => {
     const inputStream = fs.createReadStream(sourcePath);
-    const brotliStream = zlib.createBrotliCompress();
-    const outputStream = fs.createWriteStream((path.join(destinationPath, `${path.parse(sourcePath).name}.gz`)));
+    const outputStream = fs.createWriteStream(path.join(destinationPath, `${path.parse(sourcePath).name}.gz`));
 
-    inputStream.pipe(brotliStream).pipe(outputStream);
+    inputStream.pipe(zlib.createBrotliCompress()).pipe(outputStream);
 };
 
 export const decompressFile = (sourcePath, destinationPath) => {
     const inputStream = fs.createReadStream(sourcePath);
-    const brotliStream = zlib.createBrotliCompress();
-    const outputStream = fs.createWriteStream((path.join(destinationPath, `${path.parse(sourcePath).name}.txt`)));
+    const outputStream = fs.createWriteStream(path.join(destinationPath, `${path.parse(sourcePath).name}.txt`));
 
-    inputStream.pipe(brotliStream).pipe(outputStream);
+    inputStream.pipe(zlib.createBrotliDecompress()).pipe(outputStream);
 };
