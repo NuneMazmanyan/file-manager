@@ -39,9 +39,7 @@ process.stdin.on('data', (data) => {
             }
                 break;
             case 'os --cpus': {
-                const cpus = []
-                os.cpus().forEach(cpu => cpus.push(`${cpu.speed / 1000} ghz`));
-                process.stdout.write(`(overall amount of CPUS  ${os.cpus().length},Model is ${cpus} \n`);
+                process.stdout.write(`${os.cpus().length}\n`);
             }
                 break;
             case 'os --homedir': {
