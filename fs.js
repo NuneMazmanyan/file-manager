@@ -12,8 +12,6 @@ export const goToUpperDirectory = (currentDirectory) => {
 }
 export const changeDirectory = (currentDirectory, targetDirectory) => {
     const resolvedPath = path.resolve(currentDirectory, targetDirectory);
-    console.log(currentDirectory);
-    console.log(resolvedPath);
     if (resolvedPath === currentDirectory) {
         console.log('Invalid directory: Cannot go above root directory');
     } else {
@@ -43,7 +41,7 @@ export  const listDirectoryContents = (currentDirectory) => {
     })
     setTimeout(() => {
         printTable(list);
-    }, 5000); //I wrote the call in setTimeout to be sure the list is complete
+    }, 1000); //I wrote the call in setTimeout to be sure the list is complete
 };
 
 export const printTable = (data) => {
@@ -53,9 +51,6 @@ export const printTable = (data) => {
     data.forEach(({index, name, type}) => {
         console.log(`${index.toString().padEnd(5)}\t${name.padEnd(30)}\t${type}`);
     });
-
-    printCurrentDirectory();
-    process.stdout.write('FileManager>');
 };
 
 export const readContent = (currentDirectory, targetDirectory) => {

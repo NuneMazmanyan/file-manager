@@ -11,6 +11,8 @@ import {
 import {calculateHash} from "./hash.js";
 import {compressFile, decompressFile} from "./zip.js";
 
+//npm run start -- --username=your_username
+
 const args = process.argv.slice(2);
 const usernameArgIndex = args[0].indexOf('--username');
 const username = args[0].slice(usernameArgIndex + 11);
@@ -35,6 +37,7 @@ process.stdin.on('data', (data) => {
             case 'os --EOL': {
                 process.stdout.write(`${os.EOL} \n`);
             }
+                break;
             case 'os --cpus': {
                 const cpus = []
                 os.cpus().forEach(cpu => cpus.push(`${cpu.speed / 1000} ghz`));
@@ -107,7 +110,7 @@ process.stdin.on('data', (data) => {
                 break;
         }
 
-        setTimeout(()=>{
+        setTimeout(() => {
             printCurrentDirectory()
             process.stdout.write('FileManager>');
         }, 1000);
@@ -121,7 +124,7 @@ process.stdin.on('error', (err) => {
     console.error('Error occurred:', err);
 });
 
-process.stdin.on('SIGINT', () => {
+process.once('SIGINT', () => {
     process.stdout.write(`Thank you for using File Manager, ${username}, goodbye!`);
     process.exit(0);
 })

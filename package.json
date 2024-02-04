@@ -9,10 +9,5 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@types/node": "^20.2.5",
-    "cli-table": "^0.3.11",
-    "nodemon": "^2.0.22"
-  },
   "type": "module"
 }
