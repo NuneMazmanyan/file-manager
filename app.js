@@ -10,6 +10,9 @@ import {
 } from './fs.js';
 import {calculateHash} from "./hash.js";
 import {compressFile, decompressFile} from "./zip.js";
+import {getArchitecture, getCpus, getEOL, getHomedir, getUsername} from "./os-info.js";
+import {fileManagerLog, printCurrentDirectory} from "./constant-functions.js";
+import {handleError} from "./errorHandler.js";
 
 //npm run start -- --username=your_username
 
@@ -19,13 +22,9 @@ const username = args[0].slice(usernameArgIndex + 11);
 
 let currentDirectory = os.homedir();
 
-export const printCurrentDirectory = () => {
-    console.log(`You are currently in ${currentDirectory}`);
-};
-
 process.stdout.write(`Welcome to the File Manager, ${username}! \n`);
-printCurrentDirectory();
-process.stdout.write('FileManager>');
+printCurrentDirectory(currentDirectory);
+fileManagerLog();
 
 process.stdin.on('data', (data) => {
     const args = data.toString().trim().split(' ');
@@ -35,23 +34,23 @@ process.stdin.on('data', (data) => {
         let operation = data.toString().trim();
         switch (operation) {
             case 'os --EOL': {
-                process.stdout.write(`${os.EOL} \n`);
+                process.stdout.write(`${getEOL()} \n`);
             }
                 break;
             case 'os --cpus': {
-                process.stdout.write(`${os.cpus().length}\n`);
+                process.stdout.write(`${getCpus()}\n`);
             }
                 break;
             case 'os --homedir': {
-                process.stdout.write((`${os.homedir()} \n`));
+                process.stdout.write((`${getHomedir()} \n`));
             }
                 break;
             case 'os --username': {
-                process.stdout.write(`${os.userInfo().username} \n`);
+                process.stdout.write(`${getUsername()} \n`);
             }
                 break;
             case 'os --architecture': {
-                process.stdout.write(`${process.arch} \n`);
+                process.stdout.write(`${getArchitecture()} \n`);
             }
                 break;
         }
@@ -109,17 +108,17 @@ process.stdin.on('data', (data) => {
         }
 
         setTimeout(() => {
-            printCurrentDirectory()
-            process.stdout.write('FileManager>');
+            printCurrentDirectory(currentDirectory);
+            fileManagerLog();
         }, 1000);
 
     } catch (error) {
-        console.error('Operation failed:', error.message);
+        handleError(error);
     }
 })
 
 process.stdin.on('error', (err) => {
-    console.error('Error occurred:', err);
+    handleError(err);
 });
 
 process.once('SIGINT', () => {

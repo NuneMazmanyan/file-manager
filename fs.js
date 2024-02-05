@@ -1,6 +1,7 @@
 import os from "os";
 import path from "path";
 import fs from "fs";
+import {handleError} from "./errorHandler.js";
 
 export const goToUpperDirectory = (currentDirectory) => {
     if (currentDirectory !== os.homedir()) {
@@ -67,11 +68,11 @@ export const copyFile = (sourcePath, destinationPath) => {
     const destinationStream = fs.createWriteStream(destinationPath);
 
     sourceStream.on('error', (err) => {
-        console.error('Error reading source file:', err);
+        handleError(err);
     });
 
     destinationStream.on('error', (err) => {
-        console.error('Error writing to destination file:', err);
+        handleError(err);
     });
 
     destinationStream.on('finish', () => {
@@ -86,11 +87,11 @@ export const moveFile = (sourcePath, destinationPath) => {
     const destinationStream = fs.createWriteStream(path.join(destinationPath, path.basename(sourcePath)));
 
     sourceStream.on('error', (err) => {
-        console.error('Error reading source file:', err);
+        handleError(err);
     });
 
     destinationStream.on('error', (err) => {
-        console.error('Error writing to destination file:', err);
+        handleError(err);
     });
 
 
@@ -99,7 +100,7 @@ export const moveFile = (sourcePath, destinationPath) => {
     destinationStream.on('finish', () => {
         fs.unlink(sourcePath, (err) => {
             if (err) {
-                console.error('Error deleting source file:', err);
+                handleError(err);
             } else {
                 console.log(`File moved from ${sourcePath} to ${destinationPath} successfully.`);
             }
@@ -111,7 +112,7 @@ export const moveFile = (sourcePath, destinationPath) => {
 export const addFile = (currentDirectory, commandArgs) => {
     fs.writeFile(path.join(currentDirectory, commandArgs[0]), '', (err) => {
         if (err) {
-            console.error('Error creating file:', err);
+            handleError(err);
         } else {
             console.log(`Empty file "${commandArgs[0]}" created successfully.`);
         }
@@ -123,17 +124,17 @@ export const renameFile = (sourcePath, fileName) => {
 
     try {
         if (!fs.existsSync(sourcePath) || fs.existsSync(destinationPath)) {
-            throw new Error('FS operation failed');
+            console.log('FS operation failed');
         }
 
         fs.rename(sourcePath, destinationPath, (error) => {
             if (error) {
-                throw error;
+                handleError(error);
             }
             console.log('File renamed successfully');
         });
     } catch (error) {
-        throw error;
+        handleError(error);
     }
 }
 

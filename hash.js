@@ -8,7 +8,7 @@ export const calculateHash = (path) => {
         hash.update(data);
     })
     readableStream.on('error', (error) => {
-        console.error(`Error reading the file: ${error.message}`);
+        handleError(error.message);
     });
     readableStream.on('end', () => {
         console.log(hash.digest('hex'));
